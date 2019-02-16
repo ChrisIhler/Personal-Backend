@@ -6,9 +6,7 @@ function isAuthenticated(req, res, next){
     return next({ status: 401, message: 'Unauthorized ctrl-auth 1'})
   }
   const [scheme, credentials] = req.headers.authorization.split(' ')
-  console.log(credentials )
-  jwt.verify(credentials, process.env.SECRET, (err, payload) => {
-    console.log(payload, err)
+  jwt.verify(credentials, process.env.JWT_SECRET, (err, payload) => {
     if(err){
       return next({ status: 401, message: 'Unautorized ctrl-auth 2'})
     }
@@ -32,7 +30,7 @@ function login(req, res, next){
 
   authModel.login(req.body.username, req.body.password)
   .then(function({id, username}){
-    const token = jwt.sign({id, username }, process.env.SECRET)
+    const token = jwt.sign({id, username }, process.env.JWT_SECRET)
     return res.status(200).send({ token })
     })
   .catch(next)
