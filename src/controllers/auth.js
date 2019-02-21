@@ -20,7 +20,7 @@ function getAuthStatus(req, res, next){
 }
 
 function login(req, res, next){
-  if(!req.body.username){
+  if(!req.body.email){
     return next({status: 400, message: 'Bad request ctrl-auth 3'})
   }
 
@@ -28,9 +28,9 @@ function login(req, res, next){
     return next({ status: 400, message: 'Bad request ctrl-auth 4'})
   }
 
-  authModel.login(req.body.username, req.body.password)
-  .then(function({id, username}){
-    const token = jwt.sign({id, username }, process.env.JWT_SECRET)
+  authModel.login(req.body.email, req.body.password)
+  .then(function({id, email}){
+    const token = jwt.sign({id, email }, process.env.JWT_SECRET)
     return res.status(200).send({ token })
     })
   .catch(next)

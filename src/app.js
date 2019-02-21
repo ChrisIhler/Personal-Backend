@@ -19,7 +19,8 @@ if(process.env.NODE_ENV !== 'production'){
 /////////////////////////// CREATE ROUTER HERE ////////////////////
 app.use('/users', require('./routes/users'))
 app.use('/auth', require('./routes/auth'))
-// app.use('/users', require('./routes/users'))
+app.use('/offers', require('./routes/offers'))
+app.use('/queues', require('./routes/queues'))
 
 /////////////////////////// CREATE ROUTER HERE ////////////////////
 
@@ -30,7 +31,7 @@ app.use((err, req, res, next) => {
 })
 
 app.use((req, res, next) => {
-  // console.log(req)
+  console.log(req.param)
   res.status(404).json({ error: { message: 'Not Found app.js' }})
 })
 

@@ -1,14 +1,13 @@
 const db = require('../../db')
 const bcrypt = require('bcrypt')
 
-function getOneByUserName(username){
+function getOneByEmail(email){
   return (
     db('users')
-    .where({ username })
+    .where({ email })
     .first()
   )
 }
-
 
 function getAllUsers(limit){
   return limit ? db('users').slice(0, limit) : db('users')
@@ -24,9 +23,9 @@ function deleteUser(){
 
 }
 
-function newUser(username, password){
+function newUser(email, password){
 ///////////// NEED TO UPDATE THIS CODE ////////////////
-  return getOneByUserName(username)
+  return getOneByEmail(email)
     .then(function(data){
       if(data) throw { status: 400, message:'User already exists'}
       return bcrypt.hash(password, 10)
@@ -34,7 +33,7 @@ function newUser(username, password){
     .then(function(hashedPassword){
       return (
         db('users')
-        .insert({ username, password: hashedPassword })
+        .insert({ email, password: hashedPassword })
         .returning('*')
       )
     })
@@ -50,5 +49,4 @@ function updateUser(){
 
 }
 
-module.exports = { getOneByUserName, getAllUsers, getUser, deleteUser, newUser, updateUser }
-
+module.exports = { getOneByEmail, getAllUsers, getUser, deleteUser, newUser, updateUser }
